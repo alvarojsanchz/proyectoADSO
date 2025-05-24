@@ -1,17 +1,53 @@
-import { ClerkProvider } from '@clerk/clerk-expo';
-import { tokenCache } from '@clerk/clerk-expo/token-cache';
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import InitialLayout from '../components/initialLayout';
-
+// app/_layout.tsx
+import { Stack } from 'expo-router';
 
 export default function RootLayout() {
   return (
-    <ClerkProvider tokenCache={tokenCache} >
-      <SafeAreaProvider>
-        <SafeAreaView style={{ flex: 1, backgroundColor: "black" }}>
-          <InitialLayout />
-        </SafeAreaView>
-      </SafeAreaProvider>
-    </ClerkProvider>
+    <Stack>
+      <Stack.Screen
+        name="(auth)"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="(tabs)"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="registro/ingreso"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="registro/salida"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="informacion/ocupacion"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="informacion/contable"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="informacion/historial"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="configuracion/tarifas"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="configuracion/estacionamiento"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="configuracion/password"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="configuracion/about"
+        options={{ headerShown: false }}
+      />
+    </Stack>
   );
 }
