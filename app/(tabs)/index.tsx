@@ -159,8 +159,6 @@ export default function Dashboard() {
           </Text>
         </View>
       </View>
-
-      {/* Espaciado final */}
       <View style={{ height: 100 }} />
     </ScrollView>
   );

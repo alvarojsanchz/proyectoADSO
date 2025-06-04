@@ -3,25 +3,30 @@ import cors from 'cors';
 import express from 'express';
 import mysql from 'mysql2/promise';
 
-
 const app = express();
 
-
-// CORS para desarrollo
 app.use(cors({
-    origin: ['http://localhost:19006', 'exp://192.168.1.2:19000'],
+    origin: [
+        'http://localhost:19006', 
+        'exp://192.168.1.3:8081',
+        'http://192.168.1.3:8081',
+        'exp://192.168.1.2:19000'  // Mantener la anterior por compatibilidad
+    ],
     methods: ['GET', 'POST', 'PUT'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 app.use(express.json());
 
-// Pool de conexiones optimizado
+// Configuración de base de datos según entorno
+const isTestEnvironment = process.env.NODE_ENV === 'test';
+const database = isTestEnvironment ? 'sistema_estacionamiento_test' : 'sistema_estacionamiento';
+
 const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',
     password: 'root',
-    database: 'sistema_estacionamiento',
+    database: database,
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
@@ -34,8 +39,6 @@ app.post('/api/registro', async (req, res) => {
     
     try {
         const { nombre, direccion, ciudad, capacidad, email, password } = req.body;
-        
-        // Validación de campos obligatorios
         if (!nombre || !direccion || !capacidad || !email || !password) {
             return res.status(400).json({ error: 'Campos requeridos faltantes' });
         }
@@ -45,7 +48,6 @@ app.post('/api/registro', async (req, res) => {
             return res.status(400).json({ error: 'Capacidad debe ser un número entre 1 y 999' });
         }
         
-        // Verificar si el email ya existe
         const [existingUser] = await connection.query(
             'SELECT id_estacionamiento FROM Estacionamiento WHERE email = ?',
             [email.toLowerCase()]
@@ -55,7 +57,6 @@ app.post('/api/registro', async (req, res) => {
             return res.status(400).json({ error: 'El email ya está registrado' });
         }
         
-        // Insertar estacionamiento
         const [estacionamientoResult] = await connection.query(
             `INSERT INTO Estacionamiento (nombre, direccion, ciudad, capacidad, email, password)
              VALUES (?, ?, ?, ?, ?, ?)`,
@@ -64,7 +65,7 @@ app.post('/api/registro', async (req, res) => {
         
         const idEstacionamiento = estacionamientoResult.insertId;
         
-        // Crear tipos de vehículo si no existen
+        // Tipos de vehiculo asignados por defecto
         const tiposConfig = [
           { nombre: 'Bus' },
           { nombre: 'Carro' },
@@ -78,12 +79,11 @@ app.post('/api/registro', async (req, res) => {
           );
         }
         
-        // Obtener IDs de tipos
         const [tipos] = await connection.query(
             'SELECT id_tipo_vehiculo, nombre FROM TipoVehiculo ORDER BY nombre'
         );
         
-        // Insertar tarifas por defecto
+        // Tarifas asignadas por defecto
         const tarifasDefault = [
             { tipo: 'Moto', valor: 2000 },
             { tipo: 'Carro', valor: 3000 },
@@ -225,7 +225,7 @@ app.post('/api/ingreso', async (req, res) => {
       return res.status(400).json({ error: 'El vehículo ya está en el estacionamiento' });
     }
 
-    // Buscar espacio disponible (CORREGIDO: obtener también el número)
+    // Buscar espacio disponible
     const [espacioDisponible] = await connection.query(`
       SELECT id_espacio, numero 
       FROM Espacio 
@@ -301,7 +301,7 @@ app.post('/api/salida', async (req, res) => {
       return res.status(400).json({ error: 'Placa y email requeridos' });
     }
 
-    // Obtener ticket activo (CORREGIDO: incluir número del espacio)
+    // Obtener ticket activo
     const [ticket] = await connection.query(`
       SELECT
         t.id_ticket,
@@ -353,7 +353,7 @@ app.post('/api/salida', async (req, res) => {
         placa: placa.toUpperCase(),
         tiempo_estadia: tiempoEstadia,
         valor_total: valorTotal,
-        espacio: ticketData.numero_espacio  // ✅ CORREGIDO: Ahora devuelve el número formateado
+        espacio: ticketData.numero_espacio 
       }
     });
 
@@ -464,7 +464,6 @@ app.get('/api/reporte-ocupacion/:email', async (req, res) => {
       AND DATE(t.fecha_hora_entrada) = CURDATE()
     `, [id_estacionamiento]);
 
-    // Formatear tiempo promedio
     const promedioMinutos = tiempoPromedio[0]?.promedio_minutos || 0;
     const tiempoPromedioFormateado = {
       horas: Math.floor(promedioMinutos / 60),
@@ -541,7 +540,7 @@ app.get('/api/tarifas/:email', async (req, res) => {
   }
 });
 
-// 2. Actualizar tarifa específica
+// Actualizar tarifa específica
 app.put('/api/tarifas/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -563,7 +562,7 @@ app.put('/api/tarifas/:id', async (req, res) => {
   }
 });
 
-// 3. Obtener información completa del estacionamiento
+// Obtener información completa del estacionamiento
 app.get('/api/estacionamiento/:email', async (req, res) => {
   try {
     const { email } = req.params;
@@ -584,7 +583,7 @@ app.get('/api/estacionamiento/:email', async (req, res) => {
       return res.status(404).json({ error: 'Estacionamiento no encontrado' });
     }
 
-    // Obtener estadísticas adicionales
+    // Obtener estadísticas
     const [estadisticas] = await pool.query(`
       SELECT 
         COUNT(CASE WHEN estado = 'ocupado' THEN 1 END) as espacios_ocupados,
@@ -605,7 +604,7 @@ app.get('/api/estacionamiento/:email', async (req, res) => {
   }
 });
 
-// 4. Actualizar información del estacionamiento
+// Actualizar información del estacionamiento
 app.put('/api/estacionamiento/:email', async (req, res) => {
   const connection = await pool.getConnection();
   await connection.beginTransaction();
@@ -694,7 +693,7 @@ app.put('/api/estacionamiento/:email', async (req, res) => {
   }
 });
 
-// 5. Cambiar contraseña
+// Cambiar contraseña
 app.put('/api/cambiar-password/:email', async (req, res) => {
   try {
     const { email } = req.params;

@@ -1,3 +1,4 @@
+//app/(auth)/login.tsx
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
@@ -55,7 +56,6 @@ export default function Login() {
 
   const handleRegister = async () => {
     try {
-      // Validación de campos requeridos
       if (!registerData.nombre || !registerData.direccion || 
           !registerData.capacidad || !registerData.email || 
           !registerData.password || !registerData.confirmPassword) {

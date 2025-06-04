@@ -6,14 +6,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
 import {
-    ActivityIndicator,
-    Alert,
-    Modal,
-    ScrollView,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View
+  ActivityIndicator,
+  Alert,
+  Modal,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
 } from 'react-native';
 import { COLORS } from '../../constants/theme';
 import { styles } from '../../styles/configuracion.styles';
@@ -48,7 +48,7 @@ export default function TarifasScreen() {
     loadUserEmail();
   }, [router]);
 
-  // Función para cargar tarifas
+  // Cargar tarifas
   const loadTarifas = useCallback(async () => {
     if (!userEmail) return;
 
@@ -102,7 +102,7 @@ export default function TarifasScreen() {
         setModalVisible(false);
         setEditingTarifa(null);
         setNuevoValor('');
-        loadTarifas(); // Recargar tarifas
+        loadTarifas();
       } else {
         Alert.alert('Error', data.error || 'Error al actualizar tarifa');
       }

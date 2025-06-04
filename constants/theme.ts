@@ -2,36 +2,34 @@
 
 export const COLORS = {
     // Azules principales
-    primary: "#2563EB",        // Azul principal elegante
-    primaryLight: "#3B82F6",   // Azul más claro para acentos
-    primaryDark: "#1E40AF",    // Azul oscuro para contraste
+    primary: "#2563EB",       
+    primaryLight: "#3B82F6",  
+    primaryDark: "#1E40AF",    
     
     // Fondos
-    background: "#F8FAFC",     // Azul muy claro, casi blanco
-    surface: "#FFFFFF",        // Blanco puro para tarjetas
-    surfaceLight: "#F1F5F9",   // Gris azulado muy claro
-    surfaceDark: "#E2E8F0",    // Gris azulado para bordes
+    background: "#F8FAFC",
+    surface: "#FFFFFF",     
+    surfaceLight: "#F1F5F9",   
+    surfaceDark: "#E2E8F0",    
     
     // Textos
-    textPrimary: "#0F172A",    // Texto principal oscuro
-    textSecondary: "#475569",  // Texto secundario gris
-    textMuted: "#64748B",      // Texto desactivado
+    textPrimary: "#0F172A",
+    textSecondary: "#475569",
+    textMuted: "#64748B",
     
     // Estados
-    success: "#059669",        // Verde sobrio para éxito
-    warning: "#D97706",        // Naranja sobrio para advertencias
-    error: "#DC2626",          // Rojo sobrio para errores
-    info: "#0284C7",           // Azul info
+    success: "#059669",       
+    warning: "#D97706",       
+    error: "#DC2626",
+    info: "#0284C7",
     
-    // Compatibilidad (para componentes existentes)
+
     white: "#FFFFFF",
     grey: "#64748B",
+    accent: "#6366F1",       
+    accentLight: "#A5B4FC",    
     
-    // Gradientes y acentos
-    accent: "#6366F1",         // Púrpura suave para acentos
-    accentLight: "#A5B4FC",    // Púrpura claro
-    
-    // Bordes y divisores
+    // Bordes
     border: "#E2E8F0",
     borderLight: "#F1F5F9",
   } as const;

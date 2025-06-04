@@ -29,10 +29,10 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   screenTitle: {
-    fontSize: 28,
-    fontWeight: '700',
+    fontSize: 32,
+    fontWeight: 'bold',
     color: COLORS.textPrimary,
-    marginTop: 80,
+    marginTop: 50,
     marginBottom: 100,
     textAlign: 'center',
   },

@@ -1,3 +1,4 @@
+//app/(tabs)/registro.tsx
 import { useRouter } from 'expo-router';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { REGISTRO_IMAGES } from '../../constants/registroImages';
@@ -32,6 +33,7 @@ export default function RegistroScreen() {
 
   return (
     <ScrollView contentContainerStyle={styles.registroContainer}>
+      <Text style={styles.screenTitle}>Registro de Vehículos</Text>
       <CenteredCard
         imageKey="ingreso"
         title="Registrar Ingreso"

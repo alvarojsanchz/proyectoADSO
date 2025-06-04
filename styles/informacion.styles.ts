@@ -129,7 +129,7 @@ export const styles = StyleSheet.create({
     fontWeight: '600',
   },
 
-  // Estilos para estadísticas (FALTABAN ESTOS)
+  // Estilos para estadísticas
   statsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -173,7 +173,7 @@ export const styles = StyleSheet.create({
     color: COLORS.textMuted,
   },
 
-  // Estilos para secciones (FALTABAN ESTOS)
+  // Estilos para secciones
   section: {
     margin: 20,
     marginTop: 10,

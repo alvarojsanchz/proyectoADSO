@@ -1,3 +1,4 @@
+//app/informacion/ocupacion.tsx
 import { API_BASE_URL } from '@/constants/api';
 import { ReporteOcupacion } from '@/constants/types';
 import { Ionicons } from '@expo/vector-icons';

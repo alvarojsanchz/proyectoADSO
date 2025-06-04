@@ -1,3 +1,4 @@
+//app/registro/ingreso.tsx
 import { API_BASE_URL } from '@/constants/api';
 import { styles } from '@/styles/registro.styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';

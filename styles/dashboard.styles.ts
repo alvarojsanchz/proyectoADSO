@@ -128,7 +128,7 @@ export const styles = StyleSheet.create({
     fontSize: 16,
   },
 
-  // Tarjetas legacy (mantener compatibilidad)
+  // Tarjetas
   card: {
     backgroundColor: COLORS.surface,
     borderRadius: 16,
